@@ -1,4 +1,4 @@
-export class ErrorResponse extends Error {
+export class ErrorResponse {
 
     public static NotFound(message: string = "Not found"): ErrorResponse {
         return new this(404, message);
@@ -19,7 +19,7 @@ export class ErrorResponse extends Error {
     public message: string;
 
     constructor(status: number, message: string) {
-        super(message);
+        this.message = message;
         this.status = status;
     }
 }

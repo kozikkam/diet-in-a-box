@@ -7,6 +7,7 @@ import { IErrorHandler } from "./IErrorHandler";
 
 @injectable()
 export class ErrorHandler implements IErrorHandler {
+  
   @inject(TYPES.ILogger)
   private readonly _logger: ILogger;
 

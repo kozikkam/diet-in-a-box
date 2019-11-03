@@ -1,6 +1,7 @@
 import { Application } from "express";
 import { Container } from "inversify";
 import { IDatabase } from "../../core/database/IDatabase";
+import { handleEndpointError } from "../../core/errorHandler/handleEndpointError";
 import { TYPES } from "../../ioc/types";
 import { IPostUserController } from "./controller/postUserController/IPostController";
 import getContainer from "./ioc/inversify.config";
@@ -15,6 +16,6 @@ export const initUserRoutes = (app: Application, prefix: string = "" ): void => 
   const postUserController: IPostUserController = container.get(USER_TYPES.IPostUserController);
   const getUserController: IPostUserController = container.get(USER_TYPES.IGetUserController);
 
-  app.post(`${prefix}/user`, postUserController.process.bind(postUserController));
-  app.get(`${prefix}/user`, getUserController.process.bind(getUserController));
+  app.post(`${prefix}/user`, handleEndpointError(postUserController.process.bind(postUserController)));
+  app.get(`${prefix}/user`, handleEndpointError(getUserController.process.bind(getUserController)));
 };
