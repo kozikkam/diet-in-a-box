@@ -1,4 +1,4 @@
-import { Request, Response, NextFunction } from "express";
+import { Request, Response } from "express";
 import { inject, injectable } from "inversify";
 import { ErrorResponse } from "../../../../response/ErrorResponse";
 import { SuccessResponse } from "../../../../response/SuccessResponse";

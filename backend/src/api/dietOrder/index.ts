@@ -19,7 +19,7 @@ export const initDietOrderRoutes = (app: Application, prefix: string = "" ): voi
   const getDietOrderController: IGetDietOrderController = container.get(DIET_ORDER_TYPES.IGetDietOrderController);
   const updateDietOrderController: IPutDietOrderController = container.get(DIET_ORDER_TYPES.IPutDietOrderController);
 
-  const path = `${prefix}/dietOrder`;
+  const path = `${prefix}/diet-order`;
   app.post(path, handleEndpointError(postDietOrderController.process.bind(postDietOrderController)));
   app.get(path, handleEndpointError(getDietOrderController.process.bind(getDietOrderController)));
   app.put(`${path}/:id`, handleEndpointError(updateDietOrderController.process.bind(updateDietOrderController)));
