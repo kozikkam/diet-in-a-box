@@ -15,7 +15,8 @@
       "property-declaration",
       "parameter",
       "variable-declaration",
-      "member-variable-declaration"
+      "member-variable-declaration",
+      "variable-declaration-ignore-function"
     ],
     "interface-name": [true, "always-prefix"],
     "unified-signatures": true,
@@ -30,6 +31,7 @@
     "prefer-const": true,
     "quotemark": [true, "double"],
     "object-literal-sort-keys": false,
-    "variable-declaration-ignore-function": true
+    "variable-declaration-ignore-function": true,
+    "no-empty-interface": false
   }
 }

@@ -2,9 +2,9 @@ import { NextFunction, Request, Response } from "express";
 import { inject, injectable } from "inversify";
 import { TYPES } from "../../ioc/types";
 import { ErrorResponse } from "../../response/ErrorResponse";
+import { ValidationError } from "../error/ValidationError";
 import { ILogger } from "../logger/ILogger";
 import { IErrorHandler } from "./IErrorHandler";
-import { ValidationError } from "../error/ValidationError";
 
 @injectable()
 export class ErrorHandler implements IErrorHandler {
