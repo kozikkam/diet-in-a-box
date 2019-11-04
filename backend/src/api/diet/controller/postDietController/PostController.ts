@@ -1,13 +1,13 @@
 import { Request, Response } from "express";
 import { inject, injectable } from "inversify";
+import { IValidator } from "../../../../core/validator/IValidator";
+import { TYPES } from "../../../../ioc/types";
 import { SuccessResponse } from "../../../../response/SuccessResponse";
 import { DIET_ORDER_REPOSITORIES } from "../../ioc/DietTypes";
 import { IDiet } from "../../model/Diet";
 import { IDietRepository } from "../../repository/IDietRepository";
 import { dietPostSchema } from "../../schema/post/postDiet";
 import { IPostDietController } from "./IPostController";
-import { TYPES } from "../../../../ioc/types";
-import { IValidator } from "../../../../core/validator/IValidator";
 
 @injectable()
 export class PostDietController implements IPostDietController {

@@ -46,13 +46,13 @@ async function bootstrap(): Promise<void> {
   app.listen(port, () => {
     console.log(`App listening on port ${port}`);
   });
-};
+}
 
 function initMiddlewares(app: Application): void {
   app.use(helmet());
   app.use(cors());
   app.use(bodyParser.json());
   app.use(bodyParser.urlencoded());
-};
+}
 
 bootstrap();

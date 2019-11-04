@@ -1,5 +1,7 @@
 import { Request, Response } from "express";
 import { inject, injectable } from "inversify";
+import { IValidator } from "../../../../core/validator/IValidator";
+import { TYPES } from "../../../../ioc/types";
 import { ErrorResponse } from "../../../../response/ErrorResponse";
 import { SuccessResponse } from "../../../../response/SuccessResponse";
 import { DIET_ORDER_REPOSITORIES } from "../../ioc/DietTypes";
@@ -7,8 +9,6 @@ import { IDiet } from "../../model/Diet";
 import { IDietRepository } from "../../repository/IDietRepository";
 import { dietPutSchema } from "../../schema/put/putDiet";
 import { IPutDietController } from "./IPutController";
-import { IValidator } from "../../../../core/validator/IValidator";
-import { TYPES } from "../../../../ioc/types";
 
 @injectable()
 export class PutDietController implements IPutDietController {
@@ -26,7 +26,7 @@ export class PutDietController implements IPutDietController {
     });
     if (dietToModify) {
       const { name, dailyCost } = req.body;
-      const updated = await this._dietRepository.updateOneById(req.query.id, {
+      const updated: IDiet = await this._dietRepository.updateOneById(req.query.id, {
         $set: { name, dailyCost }
       });
       return res.json(SuccessResponse.Ok(updated));

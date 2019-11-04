@@ -1,5 +1,7 @@
 import { Request, Response } from "express";
 import { inject, injectable } from "inversify";
+import { IValidator } from "../../../../core/validator/IValidator";
+import { TYPES } from "../../../../ioc/types";
 import { ErrorResponse } from "../../../../response/ErrorResponse";
 import { SuccessResponse } from "../../../../response/SuccessResponse";
 import { DIET_ORDER_REPOSITORIES } from "../../ioc/DietOrderTypes";
@@ -7,8 +9,6 @@ import { IDietOrder } from "../../model/DietOrder";
 import { IDietOrderRepository } from "../../repository/IDietOrderRepository";
 import { dietOrderPutSchema } from "../../schema/put/putDietOrder";
 import { IPutDietOrderController } from "./IPutController";
-import { TYPES } from "../../../../ioc/types";
-import { IValidator } from "../../../../core/validator/IValidator";
 
 @injectable()
 export class PutDietOrderController implements IPutDietOrderController {
