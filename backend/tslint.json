@@ -29,6 +29,7 @@
     "semicolon": true,
     "prefer-const": true,
     "quotemark": [true, "double"],
-    "object-literal-sort-keys": false
+    "object-literal-sort-keys": false,
+    "variable-declaration-ignore-function": true
   }
 }

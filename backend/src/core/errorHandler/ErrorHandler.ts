@@ -4,6 +4,7 @@ import { TYPES } from "../../ioc/types";
 import { ErrorResponse } from "../../response/ErrorResponse";
 import { ILogger } from "../logger/ILogger";
 import { IErrorHandler } from "./IErrorHandler";
+import { ValidationError } from "../error/ValidationError";
 
 @injectable()
 export class ErrorHandler implements IErrorHandler {
@@ -15,6 +16,10 @@ export class ErrorHandler implements IErrorHandler {
     return (error: Error, req: Request, res: Response, next: NextFunction): any => {
       if (!error) {
         return next();
+      }
+
+      if (error instanceof ValidationError) {
+        return res.status(400).json(ErrorResponse.BadRequest(error.message));
       }
   
       this._logger.error(error.message);
