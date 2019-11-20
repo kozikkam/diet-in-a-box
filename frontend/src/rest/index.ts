@@ -1,2 +1,1 @@
-export { default as analyticQuery } from './analyticQuery'
-export * from './analyticQuery'
+export * from './dietsQuery'
