@@ -7,10 +7,10 @@ import { DietsView } from './DietsView'
 const DashboardView = () => (
   <React.Fragment>
     <MainNavbar />
-    <Route path="/" exact={true}>
+    <Route path="/panel" exact={true}>
       <HomePage />
     </Route>
-    <Route path="/diets">
+    <Route path="/panel/diets" exact={true}>
       <DietsView />
     </Route>
   </React.Fragment>

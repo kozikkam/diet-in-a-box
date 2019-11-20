@@ -1,8 +1,8 @@
-const DASHBOARD_ROUTE = '/panel'
-
 export const RouteBuilder = {
   toIndex: () => '/',
-  toDashboard: () => DASHBOARD_ROUTE,
+  toDashboard: () => '/panel',
   toLogin: () => `/login`,
   toLogout: () => `/logout`,
+  toDietList: () => `${RouteBuilder.toDashboard()}/diets`,
+  toDiet: (dietId: string) => `${RouteBuilder.toDietList()}/${dietId}`,
 }
