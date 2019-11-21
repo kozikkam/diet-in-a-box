@@ -11,7 +11,7 @@ const DashboardView = () => (
     <Route path="/panel" exact={true}>
       <HomePage />
     </Route>
-    <Route path="/panel/diets" component={DietListView} />
+    <Route path="/panel/diets" exact={true} component={DietListView} />
     <Route path="/panel/diets/:dietId" exact={true} component={DietView} />
   </>
 )

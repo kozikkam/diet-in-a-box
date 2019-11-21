@@ -1,14 +1,58 @@
 import React from 'react'
 import { Container } from 'react-bootstrap'
-import { Diet } from 'src/models'
-import { DietList } from 'src/components/DietList'
 import { useParams } from 'react-router-dom'
+import { DietSchedule } from 'src/components/DietSchedule/DietSchedule'
+import { DailyDiet } from 'src/models'
 
-const diets: Diet[] = [
-  { id: '1', name: 'dieta 1', dailyCost: 123 },
-  { id: '2', name: 'dieta 2', dailyCost: 50 },
-  { id: '3', name: 'dieta 3', dailyCost: 34 },
-  { id: '4', name: 'dieta 4', dailyCost: 2 },
+const dailyDiets: DailyDiet[] = [
+  {
+    id: '1',
+    diet: '0',
+    dailyMeals: {
+      breakfast: null,
+      afternoonSnack: null,
+      dinner: null,
+      lunch: null,
+      morningSnack: null,
+    },
+    date: new Date(),
+  },
+  {
+    id: '2',
+    diet: '0',
+    dailyMeals: {
+      breakfast: null,
+      afternoonSnack: null,
+      dinner: null,
+      lunch: null,
+      morningSnack: null,
+    },
+    date: new Date(),
+  },
+  {
+    id: '3',
+    diet: '0',
+    dailyMeals: {
+      breakfast: null,
+      afternoonSnack: null,
+      dinner: null,
+      lunch: null,
+      morningSnack: null,
+    },
+    date: new Date(),
+  },
+  {
+    id: '4',
+    diet: '0',
+    dailyMeals: {
+      breakfast: null,
+      afternoonSnack: null,
+      dinner: null,
+      lunch: null,
+      morningSnack: null,
+    },
+    date: new Date(),
+  },
 ]
 
 const DietView = () => {
@@ -17,6 +61,7 @@ const DietView = () => {
   return (
     <Container fluid={true}>
       <h1>Dieta {dietId}</h1>
+      <DietSchedule dailyDiets={dailyDiets} />
     </Container>
   )
 }

@@ -1,27 +1,39 @@
 import React from 'react'
-import { Diet } from 'src/models'
+import { DailyDiet, MEAL_TIME } from 'src/models'
 import { Table } from 'react-bootstrap'
 //import style from './DietSchedule.module.scss'
 
-type Props = {
-  diet: Diet
+const MEAL_TIME_TRANSLATION: Record<MEAL_TIME, string> = {
+  breakfast: 'śniadanie',
+  afternoonSnack: 'popołudniowa przekąska',
+  dinner: 'kolacja',
+  lunch: 'lunch',
+  morningSnack: 'podwieczorek',
 }
 
-const DietSchedule = ({ diet }: Props) => (
+type Props = {
+  dailyDiets: DailyDiet[]
+}
+
+const DietSchedule = ({ dailyDiets }: Props) => (
   <Table responsive>
     <thead>
       <tr>
-        <th>First</th>
-        <th>Last</th>
-        <th>Handle</th>
+        <th>Dzień</th>
+        {Object.values(MEAL_TIME_TRANSLATION).map(meal => (
+          <th key={meal}>{meal}</th>
+        ))}
       </tr>
     </thead>
     <tbody>
-      <tr>
-        <td>Mark</td>
-        <td>Otto</td>
-        <td>@mdo</td>
-      </tr>
+      {dailyDiets.map(diet => (
+        <tr key={diet.id}>
+          <td>{diet.date.toString()}</td>
+          {Object.entries(MEAL_TIME_TRANSLATION).map(([key, _]) => (
+            <th key={key}>{key}</th>
+          ))}
+        </tr>
+      ))}
     </tbody>
   </Table>
 )
