@@ -8,7 +8,7 @@ import { RouteBuilder } from 'src/views/routes'
 type Props = {}
 
 export const MainNavbar = (props: Props) => (
-  <Navbar className={styles.appHeader}>
+  <Navbar className={styles.appHeader} fixedToTop>
     <div className={styles.navbarContent}>
       <div className="bp3-navbar-group bp3-align-left">
         <img className={styles.navbarLogo} src={logo} alt="logo" />
