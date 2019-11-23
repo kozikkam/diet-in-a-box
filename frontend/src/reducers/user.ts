@@ -3,7 +3,7 @@ import * as actions from 'src/actions'
 
 export const userReducer = (
   state = {
-    loggedInUser: null as Nullable<User>,
+    loggedInUser: localStorage.getItem('user') as Nullable<User>,
   },
   action: actions.ActionType
 ) => {
