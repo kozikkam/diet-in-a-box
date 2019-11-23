@@ -18,7 +18,9 @@ const MainNavbarComponent = ({ loggedInUser }: Props) => (
   <Navbar className={styles.appHeader} fixedToTop>
     <div className={styles.navbarContent}>
       <div className="bp3-navbar-group bp3-align-left">
+        <a href={RouteBuilder.toDashboard()}>
         <img className={styles.navbarLogo} src={logo} alt="logo" />
+        </a>
       </div>
       <div className="bp3-navbar-group bp3-align-right">
         <Link to={RouteBuilder.toDietList()} className={styles.headerLink}>
