@@ -1,0 +1,37 @@
+{
+  "defaultSeverity": "warning",
+  "extends": "tslint:recommended",
+  "linterOptions": {
+    "exclude": ["../models/entities/*"]
+  },
+  "jsRules": {},
+  "rules": {
+    "no-trailing-whitespace": false,
+    "trailing-comma": false,
+    "variable-name": [true, "check-format", "allow-leading-underscore"],
+    "typedef": [
+      true,
+      "call-signature",
+      "property-declaration",
+      "parameter",
+      "variable-declaration",
+      "member-variable-declaration"
+    ],
+    "interface-name": [true, "always-prefix"],
+    "unified-signatures": true,
+    "no-console": false,
+    "ordered-imports": false,
+    "no-duplicate-super": true,
+    "no-duplicate-variable": true,
+    "no-implicit-dependencies": [true, "dev"],
+    "no-invalid-this": true,
+    "deprecation": true,
+    "prefer-readonly": true,
+    "semicolon": true,
+    "prefer-const": true,
+    "quotemark": [true, "double"],
+    "object-literal-sort-keys": false,
+    "variable-declaration-ignore-function": true,
+    "no-empty-interface": false
+  }
+}

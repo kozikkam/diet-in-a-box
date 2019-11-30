@@ -1,0 +1,805 @@
+{
+  "swagger": "2.0",
+  "info": {
+    "version": "1.0.0",
+    "title": "Diet in a Box"
+  },
+  "host": "dietInAbox",
+  "basePath": "/v2",
+  "tags": [
+    {
+      "name": "diet"
+    },
+    {
+      "name": "diet-order"
+    },
+    {
+      "name": "user"
+    },
+    {
+      "name": "auth"
+    },
+    {
+      "name": "product"
+    }
+  ],
+  "schemes": [
+    "https",
+    "http"
+  ],
+  "paths": {
+    "/diets": {
+      "post": {
+        "tags": [
+          "diet"
+        ],
+        "summary": "Add a new diet",
+        "operationId": "addDiet",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "in": "body",
+            "name": "body",
+            "description": "Diet object to be added",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/DietPostPut"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success"
+          }
+        },
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ]
+      },
+      "get": {
+        "tags": [
+          "diet"
+        ],
+        "summary": "",
+        "description": "",
+        "operationId": "getDiets",
+        "produces": [
+          "application/json"
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "schema": {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/Diet"
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ]
+      }
+    },
+    "/diets?dietId=1": {
+      "put": {
+        "tags": [
+          "diet"
+        ],
+        "parameters": [
+          {
+            "in": "query",
+            "name": "dietId",
+            "description": "ID of diet",
+            "required": true,
+            "type": "integer"
+          },
+          {
+            "in": "body",
+            "name": "body",
+            "description": "Diet object",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/Diet"
+            }
+          }
+        ],
+        "summary": "Update an existing diet",
+        "description": "",
+        "operationId": "updateDiet",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "responses": {
+          "200": {
+            "description": "Success"
+          }
+        },
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ]
+      }
+    },
+    "/diet-orders": {
+      "post": {
+        "tags": [
+          "diet-order"
+        ],
+        "summary": "Add a new diet-order",
+        "operationId": "addDietOrder",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "in": "body",
+            "name": "body",
+            "description": "Diet order object to be added",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/DietOrderPost"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success"
+          }
+        },
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ]
+      },
+      "get": {
+        "tags": [
+          "diet-order"
+        ],
+        "summary": "",
+        "description": "",
+        "operationId": "getDietOrders",
+        "produces": [
+          "application/json"
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "schema": {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/DietOrder"
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ]
+      }
+    },
+    "/diet-orders?dietOrderId=1": {
+      "put": {
+        "tags": [
+          "diet-order"
+        ],
+        "parameters": [
+          {
+            "in": "query",
+            "name": "dietOrderId",
+            "description": "ID of diet order",
+            "required": true,
+            "type": "integer"
+          },
+          {
+            "in": "body",
+            "name": "body",
+            "description": "Diet order object",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/DietOrderPut"
+            }
+          }
+        ],
+        "summary": "Update an existing diet order",
+        "description": "",
+        "operationId": "updateDietOrder",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "responses": {
+          "200": {
+            "description": "Success"
+          }
+        },
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ]
+      }
+    },
+    "/products": {
+      "post": {
+        "tags": [
+          "product"
+        ],
+        "summary": "Add a new product",
+        "operationId": "addProduct",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "in": "body",
+            "name": "body",
+            "description": "Product object to be added",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/ProductPostPut"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success"
+          }
+        },
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ]
+      },
+      "get": {
+        "tags": [
+          "product"
+        ],
+        "summary": "",
+        "description": "",
+        "operationId": "getProducts",
+        "produces": [
+          "application/json"
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "schema": {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/Product"
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ]
+      }
+    },
+    "/products?productId=1": {
+      "put": {
+        "tags": [
+          "product"
+        ],
+        "parameters": [
+          {
+            "in": "query",
+            "name": "productId",
+            "description": "ID of product",
+            "required": true,
+            "type": "integer"
+          },
+          {
+            "in": "body",
+            "name": "body",
+            "description": "Product object",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/Product"
+            }
+          }
+        ],
+        "summary": "Update an existing product",
+        "description": "",
+        "operationId": "updateProduct",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "responses": {
+          "200": {
+            "description": "Success"
+          }
+        },
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ]
+      }
+    },
+    "/meals": {
+      "post": {
+        "tags": [
+          "meal"
+        ],
+        "summary": "Add a new meal",
+        "operationId": "addDMeal",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "in": "body",
+            "name": "body",
+            "description": "Meal object to be added",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/MealPostPut"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success"
+          }
+        },
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ]
+      },
+      "get": {
+        "tags": [
+          "meal"
+        ],
+        "summary": "",
+        "description": "",
+        "operationId": "getMeals",
+        "produces": [
+          "application/json"
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "schema": {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/Meal"
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ]
+      }
+    },
+    "/meals?dietId=1": {
+      "put": {
+        "tags": [
+          "meal"
+        ],
+        "parameters": [
+          {
+            "in": "query",
+            "name": "mealId",
+            "description": "ID of a meal",
+            "required": true,
+            "type": "integer"
+          },
+          {
+            "in": "body",
+            "name": "body",
+            "description": "Meal object",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/MealPostPut"
+            }
+          }
+        ],
+        "summary": "Update an existing meal",
+        "description": "",
+        "operationId": "updateMeal",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "responses": {
+          "200": {
+            "description": "Success"
+          }
+        },
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ]
+      }
+    },
+    "/users": {
+      "post": {
+        "tags": [
+          "user"
+        ],
+        "summary": "Create user",
+        "description": "This can only be done by the logged in user.",
+        "operationId": "createUser",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "in": "body",
+            "name": "body",
+            "description": "Created user object",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/User"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success"
+          }
+        }
+      },
+      "get": {
+        "tags": [
+          "user"
+        ],
+        "summary": "",
+        "description": "",
+        "operationId": "getUsers",
+        "produces": [
+          "application/json"
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "schema": {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/User"
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ]
+      }
+    },
+    "/auth/login": {
+      "post": {
+        "tags": [
+          "auth"
+        ],
+        "summary": "Login",
+        "description": "",
+        "operationId": "login",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "in": "body",
+            "name": "body",
+            "description": "Login payload",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/Login"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success"
+          }
+        }
+      }
+    }
+  },
+  "securityDefinitions": {
+    "bearerAuth": {
+      "type": "apiKey",
+      "name": "api_key",
+      "in": "header"
+    }
+  },
+  "definitions": {
+    "Diet": {
+      "type": "object",
+      "properties": {
+        "_id": {
+          "type": "string"
+        },
+        "name": {
+          "type": "string"
+        },
+        "dailyCost": {
+          "type": "integer"
+        }
+      }
+    },
+    "DietPostPut": {
+      "type": "object",
+      "properties": {
+        "name": {
+          "type": "integer"
+        },
+        "dailyCost": {
+          "type": "integer"
+        }
+      }
+    },
+    "Product": {
+      "type": "object",
+      "properties": {
+        "_id": {
+          "type": "string"
+        },
+        "name": {
+          "type": "string"
+        },
+        "kcal": {
+          "type": "number"
+        },
+        "protein": {
+          "type": "number"
+        },
+        "carbohydrate": {
+          "type": "number"
+        },
+        "fat": {
+          "type": "number"
+        },
+        "fibre": {
+          "type": "number"
+        },
+        "photo": {
+          "type": "string"
+        }
+      }
+    },
+    "ProductPostPut": {
+      "type": "object",
+      "properties": {
+        "name": {
+          "type": "string"
+        },
+        "kcal": {
+          "type": "number"
+        },
+        "protein": {
+          "type": "number"
+        },
+        "carbohydrate": {
+          "type": "number"
+        },
+        "fat": {
+          "type": "number"
+        },
+        "fibre": {
+          "type": "number"
+        },
+        "photo": {
+          "type": "string"
+        }
+      }
+    },
+    "DietOrder": {
+      "type": "object",
+      "properties": {
+        "_id": {
+          "type": "integer"
+        },
+        "dietId": {
+          "type": "integer"
+        },
+        "dates": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "status": {
+          "$ref": "#/definitions/DietOrderStatus"
+        }
+      }
+    },
+    "DietOrderPost": {
+      "type": "object",
+      "properties": {
+        "dietId": {
+          "type": "integer"
+        },
+        "dates": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "status": {
+          "$ref": "#/definitions/DietOrderStatus"
+        }
+      }
+    },
+    "DietOrderPut": {
+      "type": "object",
+      "properties": {
+        "status": {
+          "$ref": "#/definitions/DietOrderStatus"
+        }
+      }
+    },
+    "DietOrderStatus": {
+      "type": "string",
+      "enum": [
+        "paid",
+        "in_realisation",
+        "cancelled",
+        "waiting_for_payment"
+      ]
+    },
+    "Meal": {
+      "type": "object",
+      "properties": {
+        "_id": {
+          "type": "string"
+        },
+        "name": {
+          "type": "string"
+        },
+        "ingredients": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/Ingredient"
+          }
+        },
+        "kcal": {
+          "type": "number"
+        },
+        "protein": {
+          "type": "number"
+        },
+        "carbohydrate": {
+          "type": "number"
+        },
+        "fat": {
+          "type": "number"
+        },
+        "fibre": {
+          "type": "number"
+        },
+        "photo": {
+          "type": "string"
+        }
+      }
+    },
+    "MealPostPut": {
+      "type": "object",
+      "properties": {
+        "name": {
+          "type": "string"
+        },
+        "ingredients": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/Ingredient"
+          }
+        },
+        "receipe": {
+          "type": "string"
+        },
+        "authorId": {
+          "type": "string"
+        },
+        "photo": {
+          "type": "string"
+        }
+      }
+    },
+    "Ingredient": {
+      "type": "object",
+      "properties": {
+        "productId": {
+          "type": "string"
+        },
+        "weight": {
+          "type": "number"
+        }
+      }
+    },
+    "User": {
+      "type": "object",
+      "properties": {
+        "_id": {
+          "type": "integer",
+          "format": "int64"
+        },
+        "name": {
+          "type": "string"
+        },
+        "email": {
+          "type": "string"
+        },
+        "password": {
+          "type": "string"
+        },
+        "role": {
+          "type": "string",
+          "enum": [
+            "admin",
+            "user"
+          ]
+        },
+        "phone": {
+          "type": "string"
+        },
+        "city": {
+          "type": "string"
+        },
+        "country": {
+          "type": "string"
+        },
+        "verified": {
+          "type": "boolean"
+        }
+      }
+    },
+    "Login": {
+      "type": "object",
+      "properties": {
+        "email": {
+          "type": "string"
+        },
+        "password": {
+          "type": "string"
+        }
+      }
+    }
+  }
+}
