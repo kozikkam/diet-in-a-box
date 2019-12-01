@@ -1,20 +1,18 @@
-import { inject, injectable } from "inversify";
+import { injectable } from "inversify";
 import { Connection, createConnection } from "mongoose";
 import { IConfig } from "../../config/IConfig";
-import { TYPES } from "../../ioc/types";
 import { ILogger } from "../logger/ILogger";
 import { IDatabase } from "./IDatabase";
 
 @injectable()
-export class Database implements IDatabase {
+class Database implements IDatabase {
 
     private _connection: Connection;
 
-    @inject(TYPES.IConfig)
-    private readonly _config: IConfig;
-
-    @inject(TYPES.ILogger)
-    private readonly _logger: ILogger;
+    constructor(
+        private readonly _config: IConfig,
+        private readonly _logger: ILogger,
+    ) { }
 
     public async getConnection(): Promise<Connection> {
         if (!this._connection) {
@@ -23,7 +21,7 @@ export class Database implements IDatabase {
         return this._connection;
     }
 
-    public async connect(): Promise<Connection> {
+    private async connect(): Promise<Connection> {
         try {
             const connection: Connection = await createConnection(
                 this._config.DB_URL,
@@ -47,3 +45,15 @@ export class Database implements IDatabase {
         this._logger.error(`Error connecting to database: ${JSON.stringify(error)}`);
     }
 }
+
+let dbInstance: Database;
+
+export default (
+    config: IConfig,
+    logger: ILogger,
+) => {
+    if (!dbInstance) {
+        dbInstance = new Database(config, logger);
+    }
+    return dbInstance;
+};

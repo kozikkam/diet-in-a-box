@@ -11,7 +11,7 @@ export abstract class BaseRepository<T extends Document>
   protected schema: Schema<T>;
 
   @inject(TYPES.IDatabase)
-  private readonly _db: IDatabase;
+  private readonly _db: () => IDatabase;
 
   public async insertOne(data: T): Promise<T> {
     const model: Model<T> = await this.getModel();
@@ -68,7 +68,8 @@ export abstract class BaseRepository<T extends Document>
   }
 
   protected async getModel(): Promise<Model<T>> {
-    const connection: Connection = await this._db.getConnection();
+    const dbInstance: IDatabase = await this._db();
+    const connection: Connection = await dbInstance.getConnection();
     return connection.model<T>(this.model, this.schema);
   }
 }

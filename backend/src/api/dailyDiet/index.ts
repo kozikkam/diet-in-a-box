@@ -27,9 +27,6 @@ const ENDPOINT: string = "daily-diets";
 @controller(`${config.API_PATH}${ENDPOINT}`)
 export class DailyDietController implements interfaces.Controller {
   private readonly _container: Container = getContainer();
-  private readonly _database: IDatabase = this._container.get<IDatabase>(
-    TYPES.IDatabase
-  );
   private readonly _dailyDietService: IDailyDietService = this._container.get<
     IDailyDietService
   >(DAILY_DIET_TYPES.IDailyDietService);
@@ -39,10 +36,6 @@ export class DailyDietController implements interfaces.Controller {
 
   @inject(TYPES.IValidator)
   private readonly _validator: IValidator;
-
-  constructor() {
-    this._database.getConnection();
-  }
 
   @httpGet("/")
   public async getDailyDiet(

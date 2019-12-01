@@ -13,7 +13,7 @@
       "esModuleInterop": true,
       "types": ["node", "reflect-metadata"],
       "skipLibCheck": true,
-      "noUnusedLocals": true
+      "noUnusedLocals": false
     },
     "exclude": [
       "tslint",

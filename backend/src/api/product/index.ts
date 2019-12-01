@@ -26,9 +26,6 @@ const ENDPOINT: string = "products";
 @controller(`${config.API_PATH}${ENDPOINT}`)
 export class ProductController implements interfaces.Controller {
   private readonly _container: Container = getContainer();
-  private readonly _database: IDatabase = this._container.get<IDatabase>(
-    TYPES.IDatabase
-  );
   private readonly _productService: IProductService = this._container.get<
     IProductService
   >(PRODUCT_TYPES.IProductService);
@@ -38,10 +35,6 @@ export class ProductController implements interfaces.Controller {
 
   @inject(TYPES.IValidator)
   private readonly _validator: IValidator;
-
-  constructor() {
-    this._database.getConnection();
-  }
 
   @httpGet("/")
   public async getProduct(

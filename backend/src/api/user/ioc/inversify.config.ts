@@ -1,10 +1,10 @@
 import "reflect-metadata";
-import { Container } from "inversify";
+import { Container, interfaces } from "inversify";
 import { Config } from "../../../config/Config";
 import { IConfig } from "../../../config/IConfig";
 import { Authenticator } from "../../../core/auth/Authenticator";
 import { IAuthenticator } from "../../../core/auth/IAuthenticator";
-import { Database } from "../../../core/database/Database";
+import database from "../../../core/database/Database";
 import { IDatabase } from "../../../core/database/IDatabase";
 import { ILogger } from "../../../core/logger/ILogger";
 import { Logger } from "../../../core/logger/Logger";
@@ -34,9 +34,15 @@ const getContainer: (() => Container) = (): Container => {
     .to(Logger)
     .inSingletonScope();
 
-  container.bind<IDatabase>(TYPES.IDatabase)
-    .to(Database)
-    .inSingletonScope();
+  container
+    .bind<interfaces.Factory<IDatabase>>(TYPES.IDatabase)
+    .toFactory<IDatabase>(() => {
+      return () => {
+        return database(
+          container.get<IConfig>(TYPES.IConfig),
+          container.get<ILogger>(TYPES.ILogger)) as IDatabase;
+      };
+    });
 
   container.bind<IUserRepository>(USER_REPOSITORIES.IUserRepository)
     .to(UserRepository);

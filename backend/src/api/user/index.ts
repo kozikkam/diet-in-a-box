@@ -20,9 +20,6 @@ const ENDPOINT: string = "users";
 @controller(`${config.API_PATH}${ENDPOINT}`)
 export class UserController implements interfaces.Controller {
   private readonly _container: Container = getContainer();
-  private readonly _database: IDatabase = this._container.get<IDatabase>(
-    TYPES.IDatabase
-  );
 
   private readonly postUserController: IPostUserController = this._container.get(
     USER_TYPES.IPostUserController
@@ -30,10 +27,6 @@ export class UserController implements interfaces.Controller {
   private readonly getUserController: IGetUserController = this._container.get(
     USER_TYPES.IGetUserController
   );
-
-  constructor() {
-    this._database.getConnection();
-  }
 
   @httpGet("/")
   public async getUser(

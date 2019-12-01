@@ -19,8 +19,9 @@ async function bootstrap(): Promise<void> {
   const errorHandler: IErrorHandler = container.get<IErrorHandler>(
     TYPES.IErrorHandler
   );
-  const database: IDatabase = container.get<IDatabase>(TYPES.IDatabase);
-  await database.getConnection();
+  const databaseFactory: () => IDatabase = container.get<() => IDatabase>(TYPES.IDatabase);
+  const dbInstance: IDatabase = databaseFactory();
+  await dbInstance.getConnection();
 
   const server: InversifyExpressServer = new InversifyExpressServer(container);
   const port: number = config.PORT || 3001;

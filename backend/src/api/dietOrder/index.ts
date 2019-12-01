@@ -22,9 +22,6 @@ const ENDPOINT: string = "diet-orders";
 @controller(`${config.API_PATH}${ENDPOINT}`)
 export class DietOrderController implements interfaces.Controller {
   private readonly _container: Container = getContainer();
-  private readonly _database: IDatabase = this._container.get<IDatabase>(
-    TYPES.IDatabase
-  );
 
   private readonly postDietOrderController: IPostDietOrderController = this._container.get(
     DIET_ORDER_TYPES.IPostDietOrderController
@@ -35,10 +32,6 @@ export class DietOrderController implements interfaces.Controller {
   private readonly updateDietOrderController: IPutDietOrderController = this._container.get(
     DIET_ORDER_TYPES.IPutDietOrderController
   );
-
-  constructor() {
-    this._database.getConnection();
-  }
 
   @httpGet("/")
   public async getDietOrder(

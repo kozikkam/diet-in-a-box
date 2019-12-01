@@ -14,17 +14,10 @@ const ENDPOINT: string = "auth";
 @controller(`${config.API_PATH}${ENDPOINT}`)
 export class AuthController implements interfaces.Controller {
   private readonly _container: Container = getContainer();
-  private readonly _database: IDatabase = this._container.get<IDatabase>(
-    TYPES.IDatabase
-  );
 
   private readonly loginController: ILoginController = this._container.get(
     AUTH_TYPES.ILoginController
   );
-
-  constructor() {
-    this._database.getConnection();
-  }
 
   @httpPost("/login")
   public async login(

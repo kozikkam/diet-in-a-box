@@ -27,9 +27,6 @@ const ENDPOINT: string = "meals";
 @controller(`${config.API_PATH}${ENDPOINT}`)
 export class MealController implements interfaces.Controller {
   private readonly _container: Container = getContainer();
-  private readonly _database: IDatabase = this._container.get<IDatabase>(
-    TYPES.IDatabase
-  );
 
   private readonly _mealService: IMealService = this._container.get<
     IMealService
@@ -40,10 +37,6 @@ export class MealController implements interfaces.Controller {
 
   @inject(TYPES.IValidator)
   private readonly _validator: IValidator;
-
-  constructor() {
-    this._database.getConnection();
-  }
 
   @httpGet("/")
   public async getMeal(

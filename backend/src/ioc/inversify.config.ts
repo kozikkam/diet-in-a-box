@@ -1,13 +1,13 @@
 import "reflect-metadata";
 
 import fs from "fs";
-import { Container } from "inversify";
+import { Container, interfaces } from "inversify";
 import path from "path";
 import { Config } from "../config/Config";
 import { IConfig } from "../config/IConfig";
 import { Authenticator } from "../core/auth/Authenticator";
 import { IAuthenticator } from "../core/auth/IAuthenticator";
-import { Database } from "../core/database/Database";
+import database from "../core/database/Database";
 import { IDatabase } from "../core/database/IDatabase";
 import { ErrorHandler } from "../core/errorHandler/ErrorHandler";
 import { IErrorHandler } from "../core/errorHandler/IErrorHandler";
@@ -16,6 +16,14 @@ import { Logger } from "../core/logger/Logger";
 import { IValidator } from "../core/validator/IValidator";
 import { Validator } from "../core/validator/Validator";
 import { TYPES } from "./types";
+
+import "../api/auth/";
+import "../api/dailyDiet/";
+import "../api/diet/";
+import "../api/dietOrder/";
+import "../api/meal/";
+import "../api/product/";
+import "../api/user/";
 
 const getContainer: () => Container = (): Container => {
   const container: Container = new Container();
@@ -35,9 +43,14 @@ const getContainer: () => Container = (): Container => {
     .inSingletonScope();
 
   container
-    .bind<IDatabase>(TYPES.IDatabase)
-    .to(Database)
-    .inSingletonScope();
+    .bind<interfaces.Factory<IDatabase>>(TYPES.IDatabase)
+    .toFactory<IDatabase>(() => {
+      return () => {
+        return database(
+          container.get<IConfig>(TYPES.IConfig),
+          container.get<ILogger>(TYPES.ILogger)) as IDatabase;
+      };
+    });
 
   container
     .bind<IErrorHandler>(TYPES.IErrorHandler)
@@ -49,16 +62,7 @@ const getContainer: () => Container = (): Container => {
     .to(Authenticator)
     .inSingletonScope();
 
-  getControllers();
-
   return container;
 };
 
 export default getContainer;
-
-function getControllers(): void {
-  const controllers = fs.readdirSync(path.resolve(__dirname, "../api"));
-  controllers.forEach((controller) => {
-    import(path.resolve(__dirname, "../api", controller, "index.ts"));
-  });
-}
