@@ -12,8 +12,9 @@ import * as Yup from 'yup'
 import { PasswordInput } from './PasswordInput'
 import { connect } from 'react-redux'
 import { setLoggedInUser } from 'src/actions'
-import { User, UserRole } from 'src/models'
+import { User } from 'src/models'
 import { useLoginMutation } from 'src/rest/loginMutation'
+import { UserRole } from '../../../../backend/src/api/user/model/UserRole'
 
 const loginSchema = Yup.object().shape({
   email: Yup.string()
