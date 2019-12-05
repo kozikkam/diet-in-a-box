@@ -49,7 +49,7 @@ const MainNavbarComponent = ({ loggedInUser }: Props) => (
             styles.headerCTAButton,
             styles.headerCTAButton_brand
           )}
-          to="/">
+          to={RouteBuilder.toDietOrder()}>
           ZAMÓW
         </Link>
         <span className="bp3-navbar-divider"></span>

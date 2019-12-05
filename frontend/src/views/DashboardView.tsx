@@ -6,6 +6,7 @@ import { DietListView } from './DietListView'
 import { DietView } from './DietView'
 import { AdminPanelView } from './AdminPanelView'
 import { LogoutView } from './LogoutView'
+import { DietOrderView } from './DietOrderView'
 
 const DashboardView = () => (
   <>
@@ -15,6 +16,7 @@ const DashboardView = () => (
     <Route path="/panel/admin" component={AdminPanelView} />
     <Route path="/panel/diets" exact={true} component={DietListView} />
     <Route path="/panel/diets/:dietId" exact={true} component={DietView} />
+    <Route path="/panel/diet-order" exact={true} component={DietOrderView} />
   </>
 )
 

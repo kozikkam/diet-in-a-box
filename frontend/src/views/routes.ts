@@ -13,4 +13,5 @@ export const RouteBuilder = {
   toMeal: (dietId: string) => `${RouteBuilder.toMealList()}/${dietId}`,
   toMealAdmin: (dietId: string) => `${RouteBuilder.toMealListAdmin()}/${dietId}`,
   toNewMealAdmin: () => `${RouteBuilder.toMealListAdmin()}/new`,
+  toDietOrder: () => `/panel/diet-order`,
 }
