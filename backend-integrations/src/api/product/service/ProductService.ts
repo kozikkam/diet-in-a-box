@@ -26,6 +26,10 @@ export class ProductService {
       let products: any = await Promise.all([this.queryProductsEdamam(name), this.queryProductsNutritionix(name)]);
       products = _.flatten(products);
       products = _.uniqBy(products, (product) => product.name);
+      products = _.orderBy(products, ["name", (o) => o.name.length], ["ASC"]);
+      products.sort((a: any, b: any) => {
+        return a.name.length - b.name.length;
+      });
       return products;
     } catch (err) {
       throw new BadRequestError(

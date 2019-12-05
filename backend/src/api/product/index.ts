@@ -19,6 +19,8 @@ import { productPostSchema } from "./schema/post/postProduct";
 import { productPutSchema } from "./schema/put/putProduct";
 import { IAuthenticator } from "../../core/auth/IAuthenticator";
 import { IValidator } from "../../core/validator/IValidator";
+import { BadRequestError } from "../../core/error/BadRequestError";
+import { IExternalProviderProduct } from "./model/IExternalProviderProduct";
 
 const config: Config = new Config();
 const ENDPOINT: string = "products";
@@ -44,6 +46,25 @@ export class ProductController implements interfaces.Controller {
   ): Promise<Response> {
     try {
       const products: IProduct[] = await this._productService.getProducts();
+      return res.json(SuccessResponse.Ok(products));
+    } catch (error) {
+      return new Promise(() => {
+        next(error);
+      });
+    }
+  }
+
+  @httpGet("/dynamic")
+  public async searchForProduct(
+    req: Request,
+    res: Response,
+    next: NextFunction
+  ): Promise<Response> {
+    try {
+      if (!req.query.name) {
+        throw new BadRequestError("Please provide 'name' parameter");
+      }
+      const products: IExternalProviderProduct[] = await this._productService.searchForProduct(req.query.name);
       return res.json(SuccessResponse.Ok(products));
     } catch (error) {
       return new Promise(() => {

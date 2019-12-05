@@ -7,4 +7,5 @@ export interface IBaseRepository<T> {
   updateOneById(_id: string, params: object): Promise<T>;
   getCountByIds(ids: string[]): Promise<number>;
   getOneById(id: string): Promise<T>;
+  getOneByName(name: string): Promise<T>;
 }

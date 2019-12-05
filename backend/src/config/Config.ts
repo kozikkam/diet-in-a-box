@@ -9,6 +9,7 @@ export class Config implements IConfig {
   public JWT_SECRET: string;
   public API_PREFIX: string;
   public API_PATH: string;
+  public PRODUCT_INTEGRATIONS_URL: string;
 
   private readonly requiredEnvs: string[];
 
@@ -35,5 +36,6 @@ export class Config implements IConfig {
     this.JWT_SECRET = process.env.JWT_SECRET;
     this.API_PREFIX = "api";
     this.API_PATH = `/${this.API_PREFIX}/`;
+    this.PRODUCT_INTEGRATIONS_URL = process.env.PRODUCT_INTEGRATIONS_URL || "http://localhost:9001/api/products";
   }
 }

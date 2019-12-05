@@ -4,6 +4,11 @@ import { IProductRepository } from "../repository/IProductRepository";
 import { IProduct } from "../model/Product";
 import { BadRequestError } from "../../../core/error/BadRequestError";
 import _ from "lodash";
+import { IExternalProviderProduct } from "../model/IExternalProviderProduct";
+import Axios from "axios";
+import { TYPES } from "../../../ioc/types";
+import { IConfig } from "../../../config/IConfig";
+
 const requestPromise = require("request-promise");
 const NR_OF_PRODUCTS_TO_SEED: number = 4000;
 
@@ -11,6 +16,8 @@ const NR_OF_PRODUCTS_TO_SEED: number = 4000;
 export class ProductService {
   @inject(PRODUCT_REPOSITORIES.IProductRepository)
   private readonly _productRepository: IProductRepository;
+  @inject(TYPES.IConfig)
+  private readonly _config: IConfig;
 
   public async getProducts(): Promise<IProduct[]> {
     return await this._productRepository.getMany();
@@ -76,6 +83,31 @@ export class ProductService {
       _.uniq(products, "label")
     );
     return await this._productRepository.insertMany(productsToSave);
+  }
+
+  public async searchForProduct(productName: string): Promise<IExternalProviderProduct[]> {  
+    // inject httpRequester in real world, handle exceptions
+    const { data: { message } } = await Axios.get(
+      this._config.PRODUCT_INTEGRATIONS_URL,
+      { params: { name: productName }},
+    );
+    const responses: IExternalProviderProduct[] = message;
+    
+    for (const response of responses) {
+      if (!this._productRepository.getOneByName(response.name)) {
+        await this._productRepository.insertOne({
+          name: response.name,
+          photo: response.photo,
+          kcal: response.kcal,
+          protein: response.protein,
+          carbohydrate: response.carbohydrate,
+          fat: response.fat,
+          fibre: response.fibre,
+        } as any);
+      }
+    }
+
+    return responses;
   }
 
   private getProductsInDBSchape(products: any): IProduct[] {
