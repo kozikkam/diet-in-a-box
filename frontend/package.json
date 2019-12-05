@@ -5,6 +5,7 @@
   "dependencies": {
     "@7ninjas/scss-mixins": "^1.0.1",
     "@blueprintjs/core": "^3.19.1",
+    "@blueprintjs/datetime": "^3.15.1",
     "@blueprintjs/select": "^3.11.2",
     "bootstrap": "^4.3.1",
     "classnames": "^2.2.6",
