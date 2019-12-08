@@ -6,4 +6,6 @@ export type DietOrder = {
   kcal: number;
   cost: number;
   status: string;
+  deliveryAddress: string;
+  deliveryTime: string;
 }

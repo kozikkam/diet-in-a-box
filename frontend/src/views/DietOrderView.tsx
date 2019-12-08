@@ -8,6 +8,7 @@ import { Select, IItemRendererProps } from '@blueprintjs/select';
 import { useKcalOptionsQuery } from 'src/rest/kcalOptionsQuery';
 import { IKcalOption } from '../../../backend/src/api/diet/model/KcalOptions';
 import { ELEVATION_1 } from '@blueprintjs/core/lib/esm/common/classes';
+import { handleStringChange } from "@blueprintjs/docs-theme";
 import '@blueprintjs/core/lib/css/blueprint.css';
 import '@blueprintjs/datetime/lib/css/blueprint-datetime.css';
 import styles from './DietOrderView.module.scss'
@@ -33,9 +34,12 @@ const DietOrderView = (props: Props) => {
   const [selectedDates, setSelectedDates] = useState([])
   const [sendingForm, setSendingForm] = useState(false)
   const [showNotification, setShowNotification] = useState(false);
+
   const [dietFilled, setDietFilled] = useState(true);
   const [kcalFilled, setKcalFilled] = useState(true);
   const [datesFilled, setDatesFilled] = useState(true);
+  const [destinationAddressFilled, setDestinationAddressFilled] = useState(true);
+  const [deliveryHourFilled, setDeliveryHourFilled] = useState(true);
 
   let daysNumber: number
   if (!selectedDates.length) {
@@ -47,6 +51,8 @@ const DietOrderView = (props: Props) => {
   }
   const DietSelect = Select.ofType<Diet>()
   const CaloriesSelect = Select.ofType<IKcalOption>()
+
+  const handleAddressChange = handleStringChange((value: string) => setDestinationAddress(value))
 
   const renderDietItem = (
     item: Diet,
@@ -61,10 +67,6 @@ const DietOrderView = (props: Props) => {
       />
     )
   }
-
-  console.log(destinationAddress)
-  console.log(deliveryHour)
-  console.log(datesFilled)
 
   const renderKcalItem = (
     item: IKcalOption,
@@ -114,7 +116,19 @@ const DietOrderView = (props: Props) => {
       setDatesFilled(true)
     }
 
-    if (!selectedDiet || !selectedKcal || !selectedDates.length) {
+    if (!destinationAddress) {
+      setDestinationAddressFilled(false)
+    } else {
+      setDestinationAddressFilled(true)
+    }
+
+    if (!deliveryHour) {
+      setDeliveryHourFilled(false)
+    } else {
+      setDeliveryHourFilled(true)
+    }
+
+    if (!selectedDiet || !selectedKcal || !selectedDates.length || !destinationAddress || !deliveryHour) {
       setSendingForm(false)
       return
     }
@@ -126,11 +140,17 @@ const DietOrderView = (props: Props) => {
       actualSelectedDates = enumerateDaysBetweenDates(selectedDates[0], selectedDates[1])
     }
 
-    await mutate({
-      dietId: selectedDiet._id,
-      dates: actualSelectedDates,
-      kcal: selectedKcal.value,
-    })
+    try {
+      await mutate({
+        dietId: selectedDiet._id,
+        dates: actualSelectedDates,
+        kcal: selectedKcal.value,
+        deliveryAddress: destinationAddress,
+        deliveryTime: deliveryHour,
+      })
+    } catch (err) {
+      console.log(err)
+    }
 
     setSendingForm(false)
     setShowNotification(true)
@@ -162,7 +182,7 @@ const DietOrderView = (props: Props) => {
                 itemRenderer={renderDietItem}
                 noResults={<MenuItem disabled={true} text='BRAK DIET' />}
                 onItemSelect={(item: Diet) => { setSelectedDiet(item) }}
-                className={dietFilled ? '' : 'error'}
+                className={dietFilled ? '' : styles.error}
               >
                 {/* children become the popover target; render value here */}
                 <Button text={`${(selectedDiet || {}).name} ${(selectedDiet || {}).dailyCost}zł`} rightIcon='double-caret-vertical' />
@@ -178,8 +198,8 @@ const DietOrderView = (props: Props) => {
                 items={kcals}
                 itemRenderer={renderKcalItem}
                 noResults={<MenuItem disabled={true} text='' />}
-                onItemSelect={(item: IKcalOption) => { setSelectedKcal(item) }}
-                className={kcalFilled ? '' : 'error'}
+                onItemSelect={(item: IKcalOption) => { setSelectedKcal(item); setKcalFilled(true) }}
+                className={kcalFilled ? '' : styles.error}
               >
                 {/* children become the popover target; render value here */}
                 <Button text={(selectedKcal || {}).value} rightIcon='double-caret-vertical' />
@@ -201,6 +221,7 @@ const DietOrderView = (props: Props) => {
               maxDate={moment().add({ months: 1 }).toDate()}
               shortcuts={false}
               onChange={(event: any) => { setSelectedDates(event) }}
+              onHoverChange={() => setDatesFilled(true)}
             />
           </Row>
         </Col>
@@ -211,9 +232,11 @@ const DietOrderView = (props: Props) => {
             </Col>
             <Col md='12' className='px-0'>
               <InputGroup
+                className={destinationAddressFilled ? '' : styles.error}
                 large={true}
                 placeholder='np. Ul. Nowacka 12/2 44-121 Wrocław'
-                onChange={(event: any) => setDestinationAddress(event.value)}
+                onChange={handleAddressChange}
+                onSelect={() => setDestinationAddressFilled(true)}
               />
             </Col>
           </Row>
@@ -222,7 +245,9 @@ const DietOrderView = (props: Props) => {
               <b>GODZINA DOSTAWY</b>
             </Col>
             <Col md='12' className='px-0'>
-              <TimePicker onChange={(event: any) => setDeliveryHour(event)} />
+              <TimePicker
+                className={deliveryHourFilled ? '' : styles.error}
+                onChange={(event: any) => { setDeliveryHour(event) }}/>
             </Col>
           </Row>
           <Row style={{ marginTop: 20, marginBottom: 20, textAlign: 'center' }}>

@@ -7,4 +7,4 @@ export const useCreateDietOrderMutation = () =>
         path: `/diet-orders`,
     })
 
-type CreateDietOrderMutation = Pick<DietOrder, "dietId" | "dates" | "kcal">
+type CreateDietOrderMutation = Pick<DietOrder, "dietId" | "dates" | "kcal" | "deliveryAddress" | "deliveryTime">
