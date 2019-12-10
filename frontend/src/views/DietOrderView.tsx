@@ -140,6 +140,8 @@ const DietOrderView = (props: Props) => {
       actualSelectedDates = enumerateDaysBetweenDates(selectedDates[0], selectedDates[1])
     }
 
+    console.log(actualSelectedDates);
+
     try {
       await mutate({
         dietId: selectedDiet._id,
@@ -148,8 +150,8 @@ const DietOrderView = (props: Props) => {
         deliveryAddress: destinationAddress,
         deliveryTime: deliveryHour,
       })
-    } catch (err) {
-      console.log(err)
+    } catch (error) {
+      console.log(error);
     }
 
     setSendingForm(false)
