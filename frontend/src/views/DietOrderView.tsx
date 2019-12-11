@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
 import { Container, Row, Col, Alert, Toast } from 'react-bootstrap'
 import { Diet } from 'src/models'
-import { useCreateDietOrderMutation } from 'src/rest'
+import { useCreateDietOrderMutation, useDietListQuery } from 'src/rest'
 import { Button, MenuItem, NumericInput, InputGroup } from '@blueprintjs/core'
 import { TimePicker, DateRangePicker } from '@blueprintjs/datetime'
 import { Select, IItemRendererProps } from '@blueprintjs/select'
@@ -14,25 +14,10 @@ import '@blueprintjs/datetime/lib/css/blueprint-datetime.css'
 import styles from './DietOrderView.module.scss'
 import moment from 'moment'
 
-type Props = {
-  //DietSchedule?: (props: DietScheduleProps) => JSX.Element
-}
-
-// Select<T> is a generic component to work with your data types.
-// In TypeScript, you must first obtain a non-generic reference:
+type Props = { }
 
 const DietOrderView = (props: Props) => {
-  // const dietsQueryResponse = useDietListQuery()
-  const dietsQueryResponse = {
-    loading: false, data: [
-      {
-        _id: 'abc',
-        name: 'name',
-        dailyCost: 111,
-        photoUrl: 'aa',
-      },
-    ]
-  }
+  const dietsQueryResponse = useDietListQuery()
   const kcalQueryResponse = useKcalOptionsQuery()
   const { mutate } = useCreateDietOrderMutation()
   const diets: Diet[] = (dietsQueryResponse.loading || !dietsQueryResponse.data) ? [] : dietsQueryResponse.data
@@ -164,9 +149,9 @@ const DietOrderView = (props: Props) => {
         deliveryTime: deliveryHour,
       })
     } catch (error) {
-      // setShowErrorNotification(true)
-      // setSendingForm(false)
-      // return
+      setShowErrorNotification(true)
+      setSendingForm(false)
+      return
     }
 
     setShowErrorNotification(true)
