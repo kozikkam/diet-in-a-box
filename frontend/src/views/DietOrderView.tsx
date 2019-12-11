@@ -1,18 +1,18 @@
 import React, { useState } from 'react'
-import { Container, Row, Col, Toast, Alert } from 'react-bootstrap'
+import { Container, Row, Col, Alert, Toast } from 'react-bootstrap'
 import { Diet } from 'src/models'
-import { useDietListQuery, useCreateDietOrderMutation } from 'src/rest'
-import { Button, MenuItem, NumericInput, InputGroup } from '@blueprintjs/core';
-import { TimePicker, DateRangePicker } from '@blueprintjs/datetime';
-import { Select, IItemRendererProps } from '@blueprintjs/select';
-import { useKcalOptionsQuery } from 'src/rest/kcalOptionsQuery';
-import { IKcalOption } from '../../../backend/src/api/diet/model/KcalOptions';
-import { ELEVATION_1 } from '@blueprintjs/core/lib/esm/common/classes';
-import { handleStringChange } from "@blueprintjs/docs-theme";
-import '@blueprintjs/core/lib/css/blueprint.css';
-import '@blueprintjs/datetime/lib/css/blueprint-datetime.css';
+import { useCreateDietOrderMutation } from 'src/rest'
+import { Button, MenuItem, NumericInput, InputGroup } from '@blueprintjs/core'
+import { TimePicker, DateRangePicker } from '@blueprintjs/datetime'
+import { Select, IItemRendererProps } from '@blueprintjs/select'
+import { useKcalOptionsQuery } from 'src/rest/kcalOptionsQuery'
+import { IKcalOption } from '../../../backend/src/api/diet/model/KcalOptions'
+import { ELEVATION_1 } from '@blueprintjs/core/lib/esm/common/classes'
+import { handleStringChange } from "@blueprintjs/docs-theme"
+import '@blueprintjs/core/lib/css/blueprint.css'
+import '@blueprintjs/datetime/lib/css/blueprint-datetime.css'
 import styles from './DietOrderView.module.scss'
-import moment from 'moment';
+import moment from 'moment'
 
 type Props = {
   //DietSchedule?: (props: DietScheduleProps) => JSX.Element
@@ -22,7 +22,17 @@ type Props = {
 // In TypeScript, you must first obtain a non-generic reference:
 
 const DietOrderView = (props: Props) => {
-  const dietsQueryResponse = useDietListQuery()
+  // const dietsQueryResponse = useDietListQuery()
+  const dietsQueryResponse = {
+    loading: false, data: [
+      {
+        _id: 'abc',
+        name: 'name',
+        dailyCost: 111,
+        photoUrl: 'aa',
+      },
+    ]
+  }
   const kcalQueryResponse = useKcalOptionsQuery()
   const { mutate } = useCreateDietOrderMutation()
   const diets: Diet[] = (dietsQueryResponse.loading || !dietsQueryResponse.data) ? [] : dietsQueryResponse.data
@@ -33,13 +43,14 @@ const DietOrderView = (props: Props) => {
   const [deliveryHour, setDeliveryHour] = useState('')
   const [selectedDates, setSelectedDates] = useState([])
   const [sendingForm, setSendingForm] = useState(false)
-  const [showNotification, setShowNotification] = useState(false);
+  const [showErrorNotification, setShowErrorNotification] = useState(false)
+  const [formSent, setFormSent] = useState(false)
 
-  const [dietFilled, setDietFilled] = useState(true);
-  const [kcalFilled, setKcalFilled] = useState(true);
-  const [datesFilled, setDatesFilled] = useState(true);
-  const [destinationAddressFilled, setDestinationAddressFilled] = useState(true);
-  const [deliveryHourFilled, setDeliveryHourFilled] = useState(true);
+  const [dietFilled, setDietFilled] = useState(true)
+  const [kcalFilled, setKcalFilled] = useState(true)
+  const [datesFilled, setDatesFilled] = useState(true)
+  const [destinationAddressFilled, setDestinationAddressFilled] = useState(true)
+  const [deliveryHourFilled, setDeliveryHourFilled] = useState(true)
 
   let daysNumber: number
   if (!selectedDates.length) {
@@ -93,7 +104,11 @@ const DietOrderView = (props: Props) => {
     }
 
     return dates
-};
+  }
+
+  const calculateEndPrice = () => {
+    return Math.round(daysNumber * (selectedDiet || {}).dailyCost + (selectedKcal || {}).extraCost)
+  }
 
   const submitForm = async () => {
     setSendingForm(true)
@@ -140,8 +155,6 @@ const DietOrderView = (props: Props) => {
       actualSelectedDates = enumerateDaysBetweenDates(selectedDates[0], selectedDates[1])
     }
 
-    console.log(actualSelectedDates);
-
     try {
       await mutate({
         dietId: selectedDiet._id,
@@ -151,13 +164,15 @@ const DietOrderView = (props: Props) => {
         deliveryTime: deliveryHour,
       })
     } catch (error) {
-      console.log(error);
+      // setShowErrorNotification(true)
+      // setSendingForm(false)
+      // return
     }
 
+    setShowErrorNotification(true)
     setSendingForm(false)
-    setShowNotification(true)
-    setTimeout(() => setShowNotification(false), 3000)
-    return;
+    setFormSent(true)
+    return
   }
 
   if (!dietsQueryResponse.loading && !selectedDiet) {
@@ -165,6 +180,22 @@ const DietOrderView = (props: Props) => {
   }
   if (!kcalQueryResponse.loading && !selectedKcal) {
     setSelectedKcal(kcals[0])
+  }
+
+  if (formSent) {
+    return (
+      <div>
+        <Row style={{ marginTop: 50 }}>
+          <Col md="3"></Col>
+          <Col md="6">
+            Dziękujemy za zamówienie diety. Aby dokończyć proces, konieczne jest dokonanie opłaty. Prosimy o przelew
+          na kwotę {calculateEndPrice()}zł na numer konta 1234 5678 9012 3456 7890. Po zaksięgowaniu wpłaty
+            zamówienie zostanie zrealizowane.
+        </Col>
+          <Col md="3"></Col>
+        </Row>
+      </div>
+    )
   }
 
   return (
@@ -249,7 +280,7 @@ const DietOrderView = (props: Props) => {
             <Col md='12' className='px-0'>
               <TimePicker
                 className={deliveryHourFilled ? '' : styles.error}
-                onChange={(event: any) => { setDeliveryHour(event) }}/>
+                onChange={(event: any) => { setDeliveryHour(event) }} />
             </Col>
           </Row>
           <Row style={{ marginTop: 20, marginBottom: 20, textAlign: 'center' }}>
@@ -257,7 +288,7 @@ const DietOrderView = (props: Props) => {
               <b>DO ZAPŁATY:</b>
             </Col>
             <Col md='12'>
-              <b>{daysNumber} * ({(selectedDiet || {}).dailyCost} + {(selectedKcal || {}).extraCost}) = {Math.round(daysNumber * (selectedDiet || {}).dailyCost + (selectedKcal || {}).extraCost)}zł</b>
+              <b>{daysNumber} * ({(selectedDiet || {}).dailyCost} + {(selectedKcal || {}).extraCost}) = {calculateEndPrice()}zł</b>
             </Col>
             <Col md='12' style={{ marginTop: 20 }}>
               <Button intent='success' text='ZAMAWIAM' disabled={sendingForm} onClick={submitForm} />
@@ -265,8 +296,8 @@ const DietOrderView = (props: Props) => {
           </Row>
         </Col>
       </Row>
-      <Alert show={showNotification} variant='success'>
-        <Toast.Body>Sukces!</Toast.Body>
+      <Alert show={showErrorNotification} variant='danger'>
+        <Toast.Body>Bład w systemie, prosimy spróbować ponownie</Toast.Body>
       </Alert>
     </Container>
   )
