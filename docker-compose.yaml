@@ -9,10 +9,10 @@ services:
       - "9000:9000"
     networks:
       - backend
-#    environment:
-#      - PORT: ${DIAB_PORT}
-#      - DB_URL: ${DIAB_DB_URL}
-#      - JWT_SECRET: ${DIAB_JWT_SECRET}
+    environment:
+      - PORT=9000
+      - DB_URL=${DIAB_DB_URL}
+      - JWT_SECRET=${DIAB_JWT_SECRET}
   integrations:
     build:
       context: ./backend-integrations
@@ -22,12 +22,29 @@ services:
       - "9001:9001"
     networks:
       - backend
-#    environment:
-#      - PORT: 9001
-#      - EDAMAM_ID: ${DIAB_EDAMAM_ID}
-#      - EDAMAM_KEY: ${DIAB_EDAMAM_KEY}
-#      - NUTRITIONIX_ID: ${DIAB_EDAMAM_ID}
-#      - NUTRITIONIX_KEY: ${DIAB_EDAMAM_KEY}
+    environment:
+      - PORT=9001
+      - EDAMAM_ID=${DIAB_EDAMAM_ID}
+      - EDAMAM_KEY=${DIAB_EDAMAM_KEY}
+      - NUTRITIONIX_ID=${DIAB_EDAMAM_ID}
+      - NUTRITIONIX_KEY=${DIAB_EDAMAM_KEY}
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+    restart: always
+    networks:
+      - backend
+  reverseproxy:
+    build:
+      context: ./reverseproxy
+      dockerfile: Dockerfile
+    restart: always
+    ports:
+      - "8080:80"
+    networks:
+      - backend
+
 
 networks:
   backend:
